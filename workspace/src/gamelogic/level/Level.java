@@ -196,8 +196,66 @@ public class Level {
 	//#############################################################################################################
 	//Your code goes here! 
 	//Please make sure you read the rubric/directions carefully and implement the solution recursively!
+	//precondition
+	//postcondition
 	private void water(int col, int row, Map map, int fullness) {
-		
+		Water w = new Water (col, row, tileSize, tileset.getImage("Full_water"), this, fullness);
+		if (fullness == 3) {
+			w = new Water(col, row, tileSize, tileset.getImage("Full_water"), this, fullness);
+		}
+		if (fullness == 2) {
+			w = new Water(col, row, tileSize, tileset.getImage("Half_water"), this, fullness);
+		}
+		if (fullness == 1) {
+			w = new Water(col, row, tileSize, tileset.getImage("Quarter_water"), this, fullness);
+		}
+		if (fullness == 0) {
+			w = new Water(col, row, tileSize, tileset.getImage("Falling_water"), this, fullness);
+		}
+		map.getTiles()[col][row] = w;
+
+		//down
+		if (row+1 < map.getTiles()[0].length && !(map.getTiles()[col][row+1] instanceof Water) && !(map.getTiles()[col][row+1].isSolid())) {
+			water(col, row+1, map, 0);
+		}
+		else {
+			//right
+			if(col+1 < map.getTiles().length && !(map.getTiles()[col+1][row] instanceof Water) && !(map.getTiles()[col+1][row].isSolid())) {
+				int newFullness;
+				if (fullness == 3) {
+					newFullness = 2;
+				}
+				else {
+					newFullness = 1;
+				}
+				// if there is air below, go down as falling water
+				if (row+1 < map.getTiles()[0].length && !(map.getTiles()[col + 1][row + 1] instanceof Water) && !map.getTiles()[col + 1][row + 1].isSolid()) {
+                	water(col+1, row, map, 0);
+				}
+				else {
+				water(col+1, row, map, newFullness);
+				}
+				//water(col+1, row, map, 3);
+			}
+			//left
+			if(col-1 >= 0 && !(map.getTiles()[col-1][row] instanceof Water) && !(map.getTiles()[col-1][row].isSolid())) {
+				int newFullness;
+				if (fullness == 3) {
+					newFullness = 2;
+				} 
+				else {
+					newFullness = 1;
+				}
+				// if there is air below, go down as falling water
+				if (row+ 1 < map.getTiles()[0].length && !(map.getTiles()[col - 1][row + 1] instanceof Water) && !map.getTiles()[col - 1][row + 1].isSolid()) {
+					water(col-1, row, map, 0);
+				} 
+				else {
+					water(col-1, row, map, newFullness);
+				}
+			}
+			
+		}
 	}
 
 
