@@ -215,8 +215,14 @@ public class Level {
 		map.getTiles()[col][row] = w;
 
 		//down
-		if (row+1 < map.getTiles()[0].length && !(map.getTiles()[col][row+1] instanceof Water) && !(map.getTiles()[col][row+1].isSolid())) {
-			water(col, row+1, map, 0);
+		if (row+1 < map.getTiles()[0].length && row+2 < map.getTiles()[0].length && !(map.getTiles()[col][row+1] instanceof Water) && !(map.getTiles()[col][row+1].isSolid())) {
+			if (map.getTiles()[col][row+2].isSolid()) {
+				water(col, row+1, map, 3);
+			}
+			else {
+				water(col, row+1, map, 0);
+			}
+			
 		}
 		else {
 			//right
@@ -228,14 +234,7 @@ public class Level {
 				else {
 					newFullness = 1;
 				}
-				// if there is air below, go down as falling water
-				if (row+1 < map.getTiles()[0].length && !(map.getTiles()[col + 1][row + 1] instanceof Water) && !map.getTiles()[col + 1][row + 1].isSolid()) {
-                	water(col+1, row, map, 0);
-				}
-				else {
 				water(col+1, row, map, newFullness);
-				}
-				//water(col+1, row, map, 3);
 			}
 			//left
 			if(col-1 >= 0 && !(map.getTiles()[col-1][row] instanceof Water) && !(map.getTiles()[col-1][row].isSolid())) {
@@ -246,13 +245,7 @@ public class Level {
 				else {
 					newFullness = 1;
 				}
-				// if there is air below, go down as falling water
-				if (row+ 1 < map.getTiles()[0].length && !(map.getTiles()[col - 1][row + 1] instanceof Water) && !map.getTiles()[col - 1][row + 1].isSolid()) {
-					water(col-1, row, map, 0);
-				} 
-				else {
-					water(col-1, row, map, newFullness);
-				}
+				water(col-1, row, map, newFullness);
 			}
 			
 		}
