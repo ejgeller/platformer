@@ -13,32 +13,56 @@ import gamelogic.tiles.Tile;
 public class Player extends PhysicsObject{
 	public float walkSpeed = 400;
 	public float jumpPower = 1350;
-
-	private boolean isJumping = false;
+	public static boolean isInWater = false;
+	public static boolean isInGas = false;
+	public static boolean isBoosted = false;
+	public boolean isJumping = false;
 
 	public Player(float x, float y, Level level) {
 	
 		super(x, y, level.getLevelData().getTileSize(), level.getLevelData().getTileSize(), level);
 		int offset =(int)(level.getLevelData().getTileSize()*0.1); //hitbox is offset by 10% of the player size.
 		this.hitbox = new RectHitbox(this, offset,offset, width -offset, height - offset);
+		
 	}
 
 	@Override
 	public void update(float tslf) {
-		super.update(tslf);
-		
+		super.update(tslf);		
 		movementVector.x = 0;
+
+		if (isBoosted) {
+			jumpPower = 2500;
+			walkSpeed = 1000;
+		}
 		if(PlayerInput.isLeftKeyDown()) {
 			movementVector.x = -walkSpeed;
 		}
 		if(PlayerInput.isRightKeyDown()) {
 			movementVector.x = +walkSpeed;
 		}
-		if(PlayerInput.isJumpKeyDown() && !isJumping) {
+		if (isInGas) {
+			movementVector.x /= 3;
+		}
+		if (PlayerInput.isOneKeyDown() && isInWater && !isJumping) {
+			movementVector.y = -(jumpPower + 700);
+		}
+		else if (PlayerInput.isTwoKeyDown() && isInWater && !isJumping) {
+			movementVector.y = -(jumpPower + 1400);
+		}
+		else if (PlayerInput.isThreeKeyDown() && isInWater && !isJumping) {
+			movementVector.y = -(jumpPower + 5000);
+		}
+		else if (isInWater && PlayerInput.isJumpKeyDown() && !isJumping) {
+			movementVector.y = -jumpPower;
+		}
+		else if (PlayerInput.isJumpKeyDown() && !isJumping && isInGas) {
+			movementVector.y = 0;
+		}
+		else if (PlayerInput.isJumpKeyDown() && !isJumping) {
 			movementVector.y = -jumpPower;
 			isJumping = true;
 		}
-		
 		isJumping = true;
 		if(collisionMatrix[BOT] != null) isJumping = false;
 	}
@@ -47,7 +71,7 @@ public class Player extends PhysicsObject{
 	public void draw(Graphics g) {
 		g.setColor(Color.YELLOW);
 		MyGraphics.fillRectWithOutline(g, (int)getX(), (int)getY(), width, height);
-		
+
 		if(Main.DEBUGGING) {
 			for (int i = 0; i < closestMatrix.length; i++) {
 				Tile t = closestMatrix[i];

@@ -18,8 +18,20 @@ class PlayerInput {
 	 * @return true if the walk-up-key is down
 	 */
 	public static boolean isJumpKeyDown() {
+		
 		return KeyboardInputManager.isKeyDown(KeyEvent.VK_SPACE);
 	}
+
+	public static boolean isOneKeyDown() {
+		return KeyboardInputManager.isKeyDown(KeyEvent.VK_1);
+	}
+	public static boolean isTwoKeyDown() {
+		return KeyboardInputManager.isKeyDown(KeyEvent.VK_2);
+	}
+	public static boolean isThreeKeyDown() {
+		return KeyboardInputManager.isKeyDown(KeyEvent.VK_3);
+	}
+	
 	/**
 	 * 
 	 * @return true if the walk-left-key is down
