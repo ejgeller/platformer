@@ -64,6 +64,9 @@ public class Level {
 	}
 
 	public void restartLevel() {
+		Player.isInGas = false;
+		Player.isInWater = false;
+		Player.isBoosted = false;
 		int[][] values = mapdata.getValues();
 		Tile[][] tiles = new Tile[width][height];
 
@@ -212,9 +215,9 @@ public class Level {
 					Player.isInWater = true;
 					break;
 					}
-					Player.isInWater = false;
-				}
-				
+				Player.isInWater = false;
+			}
+			
 			for (Gas g : gasList) {
 				if (player.getHitbox().isIntersecting(g.getHitbox())) {
 					Player.isInGas = true;
@@ -232,6 +235,7 @@ public class Level {
 				}
 				//Player.isBoosted = false;
 			}
+
 		}
 
 

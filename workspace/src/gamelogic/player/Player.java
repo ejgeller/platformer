@@ -30,6 +30,7 @@ public class Player extends PhysicsObject{
 	public void update(float tslf) {
 		super.update(tslf);		
 		movementVector.x = 0;
+		
 
 		if (isBoosted) {
 			jumpPower = 2500;
